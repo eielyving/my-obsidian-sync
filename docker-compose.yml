@@ -5,12 +5,14 @@ services:
     image: couchdb:3.3.3
     container_name: obsidian_couchdb
     ports:
-      - "${COUCHDB_PORT:-5984}:5984"
+      # 将 VPS 的 80 端口映射到容器的 5984 端口
+      # 这样 Cloudflare 才能正常通过 http 协议回源
+      - "80:5984"
     environment:
       - COUCHDB_USER=${COUCHDB_USER}
       - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
     volumes:
       - ./data:/opt/couchdb/data
-      # 自动配置脚本，换机器也不用重新手动勾选 CORS
+      # 引用 local.ini 自动开启 CORS，省去手动配置
       - ./local.ini:/opt/couchdb/etc/local.d/10-custom.ini
     restart: always

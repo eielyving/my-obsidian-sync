@@ -75,8 +75,12 @@ docker compose up -d
 
 输入你在 yml 里设置的 ```COUCHDB_USER``` 和 ```COUCHDB_PASSWORD```。
 
-
-
+# HTTPS：Cloudflare
+操作逻辑：
+1. DNS 设置：在 Cloudflare 后台，将你的域名（如 ```sync.yourname.xyz```）指向你的 VPS IP。
+2. 开启小黄云：确保 Proxy 状态为 On（即云朵变黄）。
+3. SSL/TLS 设置：在 Cloudflare 的 SSL 设置里，选择 "Flexible" 模式。
+注意： 开启 Cloudflare 后，你在 Obsidian 插件里填写的地址就要改成：```https://sync.yourname.xyz``` (不需要加 5984 端口，因为 Cloudflare 默认处理 443 端口。如果你非要用 5984 端口，Cloudflare 免费版是不支持的，建议把 Docker 里的端口映射改为 ```- "80:5984"```，或者在 Cloudflare 里用 ```Origin Rules``` 转发端口)。
 
 
 

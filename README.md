@@ -82,8 +82,28 @@ docker compose up -d
 3. SSL/TLS 设置：在 Cloudflare 的 SSL 设置里，选择 "Flexible" 模式。
 注意： 开启 Cloudflare 后，你在 Obsidian 插件里填写的地址就要改成：```https://sync.yourname.xyz``` (不需要加 5984 端口，因为 Cloudflare 默认处理 443 端口。如果你非要用 5984 端口，Cloudflare 免费版是不支持的，建议把 Docker 里的端口映射改为 ```- "80:5984"```，或者在 Cloudflare 里用 ```Origin Rules``` 转发端口)。
 
+# 一键脚本
+```
+mkdir -p obsidian-sync && cd obsidian-sync
 
+# 1. 从你的 GitHub 仓库下载文件 (已设为公开)
+curl -O https://raw.githubusercontent.com/eielyving/my-obsidian-sync/main/docker-compose.yml
+curl -O https://raw.githubusercontent.com/eielyving/my-obsidian-sync/main/local.ini
 
+# 2. 快速生成环境配置文件
+read -p "设置你的数据库用户名: " db_user
+read -p "设置你的数据库密码: " db_pass
+echo "COUCHDB_USER=$db_user" > .env
+echo "COUCHDB_PASSWORD=$db_pass" >> .env
 
+# 3. 启动
+docker compose up -d
+
+echo "------------------------------------------------"
+echo "部署成功！"
+echo "如果你开启了 Cloudflare，地址为: https://你的域名"
+echo "如果你直接用 IP，地址为: http://你的IP"
+echo "------------------------------------------------"
+```
 
 

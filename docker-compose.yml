@@ -2,14 +2,15 @@ version: '3.8'
 
 services:
   couchdb:
-    image: couchdb:3.3.3 # 指定版本比 latest 更稳
+    image: couchdb:3.3.3
     container_name: obsidian_couchdb
     ports:
-      - "${COUCHDB_PORT}:5984"
+      - "${COUCHDB_PORT:-5984}:5984"
     environment:
       - COUCHDB_USER=${COUCHDB_USER}
       - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
     volumes:
       - ./data:/opt/couchdb/data
-      - ./etc:/opt/couchdb/etc/local.d
+      # 自动配置脚本，换机器也不用重新手动勾选 CORS
+      - ./local.ini:/opt/couchdb/etc/local.d/10-custom.ini
     restart: always

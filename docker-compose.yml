@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  couchdb:
+    image: couchdb:3.3.3 # 指定版本比 latest 更稳
+    container_name: obsidian_couchdb
+    ports:
+      - "${COUCHDB_PORT}:5984"
+    environment:
+      - COUCHDB_USER=${COUCHDB_USER}
+      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
+    volumes:
+      - ./data:/opt/couchdb/data
+      - ./etc:/opt/couchdb/etc/local.d
+    restart: always
